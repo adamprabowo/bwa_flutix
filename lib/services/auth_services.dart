@@ -3,7 +3,7 @@ part of 'services.dart';
 class AuthServices {
   static FirebaseAuth _auth = FirebaseAuth.instance;
 
-  static Future signUp(
+  static Future<SignInSignUpResult> signUp(
     String email,
     String password,
     String name,
@@ -25,8 +25,25 @@ class AuthServices {
       await UserServices.updateUser(user);
       return SignInSignUpResult(user: user);
     } catch (e) {
-      return SignInSignUpResult(message: e.toString());
+      return SignInSignUpResult(message: e.toString().split(',')[1]);
     }
+  }
+
+  static Future<SignInSignUpResult> signIn(
+      String email, String password) async {
+    try {
+      AuthResult result = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
+
+      User user = await result.user.fromFirestore();
+      return SignInSignUpResult(user: user);
+    } catch (e) {
+      return SignInSignUpResult(message: e.toString().split(',')[1]);
+    }
+  }
+
+  static Future<void> signOut() async {
+    await _auth.signOut();
   }
 }
 
