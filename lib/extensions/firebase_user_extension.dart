@@ -9,6 +9,6 @@ extension FirebaseUserExtension on FirebaseUser {
       User(this.uid, this.email,
           name: name,
           balance: balance,
-          selectedGenres: selectedGenres = selectedGenres,
+          selectedGenres: selectedGenres,
           selectedLanguage: selectedLanguage);
 }
